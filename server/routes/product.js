@@ -39,9 +39,24 @@ router.post('/',(req,res)=>{
         return res.status(200).json({success:true})
     }))
 
-
-    
 })
+
+
+router.post('/products',(req,res)=>{
+
+  {/*더보기 버튼*/}
+  {/*limit이 있다면 원래, 없다면 100으로 설정*/}
+  let limit = req.body.limit ? parseInt(req.body.limit) : 20;
+  let skip = req.body.skip ? parseInt(req.body.skip) : 0;
+
+
+
+    //받아온 정보들을 DB에 넣어준다.
+    Product.find().populate("writer").skip(skip).limit(limit).exec((err, Info)=>{
+                if(err) return res.status(400).json({success:false, err})
+                return res.status(200).json({success:true, Info, postSize:Info.length})
+            })
+  })
 
 
 
