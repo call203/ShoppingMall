@@ -11,7 +11,7 @@ router.post('/faq/write',(req,res)=>{
     //가져온 이미지를 저장
     const faq = new FAQ(req.body)
     faq.save((err =>{
-        if(err) return res.status(400).jsoin({success:false})
+        if(err) return res.status(400).json({success:false})
         return res.status(200).json({success:true})
     }))
     

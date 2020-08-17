@@ -4,7 +4,10 @@ import axios from "axios";
 import {Icon, Col, Card, Row, Button} from 'antd'
 import Meta from 'antd/lib/card/Meta';
 import ImageSlider from '../../utils/ImageSlider'
-
+import CheckBox from './Sections/CheckBox'
+import {continents, price} from './Sections/Datas'
+import RadioBox from './Sections/RadioBox'
+import SearchFeature from './Sections/SearchFeature'
 
 function LandingPage() {
 
@@ -15,11 +18,15 @@ function LandingPage() {
     const [Skip, setSkip] = useState(0)
     const [Limit, setLimit] = useState(8)
     const [postSize, setPostSize] = useState(0)
+    const [Filters, setFilters] = useState({
+    
+        Continents:[],
+        Price:[]
+
+    })
+    const [SearchTerm, setSearchTerm] = useState("")
 
    
-
-
-
     /*처음 페이지가 로딩된 후 */
     useEffect(()=>{
 
@@ -82,6 +89,58 @@ function LandingPage() {
             </Col> 
         
     })
+    const showFilteredResults=(filters) =>{
+        let body={
+            skip:0,
+            limit:Limit,
+            filters:filters
+        }
+
+        getProducts(body)
+        setSkip(0)
+
+    }
+
+    const handlePrice=(value)=>{
+        const data = price;
+        let array =[];
+
+        for(let key in data){
+            if(data[key]._id === parseInt(value,10)){
+                array = data[key].array;
+            }
+        }
+        return array;
+    }
+
+    const handleFilters=(filters, category)=>{        
+
+
+        const newFilters = {...Filters}
+
+        newFilters[category] = filters
+
+        if(category ==='Price'){
+            let priceValues = handlePrice(filters)
+            newFilters[category] = priceValues
+        }
+        showFilteredResults(newFilters)
+        setFilters(newFilters)
+    }
+
+    const updateSearchTerm = (newSearchTerm) =>{
+
+        let body={
+            skip:0,
+            limit:Limit,
+            filters:Filters,
+            searchTerm:newSearchTerm
+        }
+        setSkip(0)
+        setSearchTerm(newSearchTerm)
+        getProducts(body)
+    }
+
 
     return (
         <div style={{width:"75%", margin:'3rem auto'}}>
@@ -91,7 +150,29 @@ function LandingPage() {
             
             {/*Filter*/}
 
+            
+            <Row gutter={[16,16]}>
+                <Col lg={12}>
+                    {/*CheckBox*/}
+                    <CheckBox  list={continents} handleFilters={filters => handleFilters(filters, "Continents")}/>
+                </Col>
+                <Col lg={12} xs={24}>
+                      {/*RadioBox*/}
+                      <RadioBox list={price} handleFilters={filters => handleFilters(filters, "Price")}/>
+                </Col>
+            </Row>
+
+           
+
+            
+            
             {/*Search*/}
+            <div style={{display:'flex', justifyContent:'flex-end', margin:'2rem auto'}}>
+                <SearchFeature
+                    refreshFunction={updateSearchTerm}
+                />
+             </div>   
+            
 
             {/*Card*/}
             <Row gutter={16,16}> 

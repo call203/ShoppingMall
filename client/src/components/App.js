@@ -11,6 +11,7 @@ import UploadProductPage from './views/UploadProductPage/UploadProductPage';
 import FAQPage from './views/ServicePage/FAQPage'
 import FAQPageWrite from './views/ServicePage/FAQWrite'
 
+
 //null   Anyone Can go inside
 //true   only logged in user can go inside
 //false  logged in user can't go inside

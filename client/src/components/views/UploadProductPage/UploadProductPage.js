@@ -6,23 +6,21 @@ const { Title } = Typography;
 const { TextArea} = Input;
 const Continents=[
 
-    {key:1, value:"채소 & 과일"},
-    {key:2, value:"수산물"},
-    {key:3, value:"정육 & 계란 & 우유"},
-    {key:4, value:"간편식"},
-    {key:5, value:"베이커리"},
-    {key:6, value:"반려동물"},
-    {key:7, value:"기타"}
+    {key:1, value:"야외용품"},
+    {key:2, value:"장난감"},
+    {key:3, value:"푸드"},
+    {key:4, value:"리빙"},
+    {key:5, value:"패션"},
+
 
 ]
-
 
 
 function UploadProductPage(props) {
     const [Title, setTitle] = useState()
     const [Price, setPrice] = useState(0)
     const [Description, setDescription] = useState()
-    const [Continent, setContinent] = useState(1)
+    const [Continent, setContinent] = useState("야외용품")
     const [Images, setImages] = useState([])
 
 
@@ -60,7 +58,7 @@ function UploadProductPage(props) {
             description:Description,
             Price:Price,
             images:Images,
-            Continenets:Continent
+            Continents: Continent
         }
 
         Axios.post('/api/product',body).then(response=>{

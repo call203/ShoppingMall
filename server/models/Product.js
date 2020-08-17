@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-
 const productSchema = mongoose.Schema({
     writer:{
         type:mongoose.Schema.Types.ObjectId,
@@ -21,6 +20,9 @@ const productSchema = mongoose.Schema({
         type:Array,
         default:[]
     },
+    Continents:{
+        type:String
+    },
     sold:{
         type:Number,
         maxlength:100,
@@ -32,7 +34,17 @@ const productSchema = mongoose.Schema({
     }
 },{timestamps:true})
    
+productSchema.index({
+    title:'text',
+    description:'text'
+},{
+    weight:{
+        title:5,
+        description:1
+    }
+})
+
 
 const Product = mongoose.model('Product', productSchema);
-
+Product.createIndexes(); 
 module.exports = { Product }
