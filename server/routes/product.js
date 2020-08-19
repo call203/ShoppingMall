@@ -92,6 +92,45 @@ router.post('/products',(req,res)=>{
   })
 
 
+  //상세 페이지
+  
+  router.get('/product_by_id', (req,res)=>{
+      //product와 같은 id의 상품을 가져온다.
+
+      let type = req.query.type
+      let productId = req.query.id
+
+     
+
+      Product.find({_id:productId}).populate('writer').exec((err, product)=>{
+        if(err){
+          return res.status(400).send(err)
+        } 
+        else{
+
+
+
+          Product.updateOne({ _id : productId },{$inc:{views:1}}).then(result=>{
+            if(result){
+              console.log("true")
+            }else{
+              console.log("false")
+            }
+            
+          }).catch((err) => {
+            console.log('Error: ' + err);
+        })
+    
+
+          return res.status(200).send({success:true, product})
+        } 
+      })
+
+      
+
+  })
+   
+
 
 
 module.exports = router;
